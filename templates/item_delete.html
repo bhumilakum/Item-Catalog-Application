@@ -1,0 +1,30 @@
+{% extends "main.html" %} {% block content %}
+<!-- item delete form with confirmation -->
+<div class="box">
+    <h1 class="is-size-4">Are you sure you want to delete this item?</h1>
+    <br>
+    <article class="media">
+        <div class="media-left">
+            <figure class="image is-128x128 is-square">
+                <img src="{{url_for('static', filename = 'img/'+item.image)}}" alt="Image">
+            </figure>
+        </div>
+        <div class="media-content">
+            <div class="content">
+                <p>
+                    <strong>{{item.name}}</strong>
+                    <br>Category: {{item.category.name}}
+                </p>
+            </div>
+            <form action="{{url_for('deleteItem', item_name = item.name)}}" method="POST">
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <input type="submit" value="Delete" class="button is-info" style="margin-right: 5px;">
+                        <a class="button is-info" href="{{url_for('showItemData', category_name = item.category.name, item_name = item.name)}}">Cancel</a>
+                    </div>
+                </nav>
+            </form>
+        </div>
+    </article>
+</div>
+{% endblock %}

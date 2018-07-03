@@ -1,0 +1,36 @@
+{% extends "main.html" %} {% block content %}
+<!-- item descriptiopn block -->
+<div class="box">
+    <article class="media">
+        <div class="media-left">
+            <figure class="image is-128x128 is-square">
+                <img src="{{url_for('static', filename = 'img/'+item.image)}}" alt="Image">
+            </figure>
+        </div>
+        <div class="media-content">
+            <div class="content">
+                <p>
+                    <strong>{{item.name}} (<a href="{{url_for('showItems', category_name = item.category.name)}}">{{item.category.name}}</a>)</strong>
+                    <br>
+                    {{item.description}}
+                    <br>
+                    <strong>Price: </strong>{{item.price}} Rs
+                    <br>
+                    <strong>Added by: </strong>{{item.user.name}}
+                    <br>
+                    <strong>Added on: </strong>{{item.created.strftime("%d %b, %Y")}}
+                </p>
+            </div>
+            <!-- link for item edit and delete if user is logged in -->
+            {% if 'username' in session %}
+            <nav class="level is-mobile">
+                <div class="level-left">
+                    <a class="button is-info" href="{{url_for('editItem', item_name = item.name)}}" style="margin-right: 5px;">Edit</a>
+                    <a class="button is-info" href="{{url_for('deleteItem', item_name = item.name)}}">Delete</a>
+                </div>
+            </nav>
+            {% endif %}
+        </div>
+    </article>
+</div>
+{% endblock %}

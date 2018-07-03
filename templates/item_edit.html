@@ -1,0 +1,147 @@
+{% extends "main.html" %} {% block content %}
+<script type="text/javascript">
+    // script code for displaying file name of image
+    $(document).ready(function () {
+        var fileName = "{{item.image}}";
+        document.getElementById("fileName").innerHTML = fileName;
+        $('input[type="file"]').change(function (e) {
+            fileName = e.target.files[0].name;
+            document.getElementById("fileName").innerHTML = fileName;
+        });
+        // script that allows only numiric value in price field of form
+        $('#price_in_rs').keypress(function (e) {
+            if (e.keyCode >= 48 && e.keyCode <= 57) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
+    });
+
+    // when a form is submitted, this function will be called to validate form input
+    function validate() {
+        var isFormValid = true;
+        var isExtValid = true;
+        $(".field input, textarea").each(function () {
+            if ($.trim($(this).val()).length == 0) {
+                $(this).addClass("is-danger");
+                isFormValid = false;
+                $(this).focus();
+            }
+            else {
+                $(this).removeClass("is-danger");
+            }
+        });
+
+        var img = document.itemeditform.elements["image"].value;
+        var ext = img.substr(img.lastIndexOf('.') + 1).toLowerCase();
+        var allowExt = ['png', 'jpg', 'jpeg', 'gif'];
+        if (img.length > 0) {
+            if (allowExt.indexOf(ext) === -1) {
+                isExtValid = false;
+            }
+        }
+
+        if (!isExtValid && !isFormValid) {
+            var msg = "Please fill in all the required fields indicated by * \nand \nInvalid image file format. Only " + allowExt.join(', ') + " files are allowed.";
+            $('#msg-container').removeClass('is-hidden');
+            document.getElementById("msg-body").innerHTML = msg;
+            return false;
+        }
+        if (!isFormValid) {
+            var msg = "Please fill in all the required fields indicated by *";
+            $('#msg-container').removeClass('is-hidden');
+            document.getElementById("msg-body").innerHTML = msg;
+            return isFormValid;
+        }
+        if (!isExtValid) {
+            var msg = "Invalid image file format. Only " + allowExt.join(', ') + " files are allowed.";
+            $('#msg-container').removeClass('is-hidden');
+            document.getElementById("msg-body").innerHTML = msg;
+            return isExtValid;
+        }
+        return true;
+    }
+</script>
+
+<!-- flash message section -->
+<div class="message is-danger is-hidden" id="msg-container">
+    <div class="message-body" id="msg-body">
+    </div>
+</div>
+<!-- end flash message section -->
+
+<!-- form for item data editing -->
+<div class="tile is-ancestor is-capitalized">
+    <div class="tile is-parent">
+        <div class="tile is-child box">
+            <div class="columns">
+                <div class="column is-6">
+                    <h1 class="is-size-3">Edit Item</h1>
+                    <br>
+                    <p class="help is-danger" style="display: inline;">* indicates required field </p>
+                    <form action="{{url_for('editItem', item_name = item.name)}}" name="itemeditform" method="POST" enctype=multipart/form-data onsubmit="return validate()">
+                        <div class="field">
+                            <label class="label">Name *</label>
+                            <div class="control">
+                                <input class="input" type="text" value="{{item.name}}" name="item_name">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Description *</label>
+                            <div class="control">
+                                <textarea class="textarea" name="description">{{item.description}}</textarea>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Price (In Rupees) *</label>
+                            <div class="control">
+                                <input class="input" type="text" value="{{item.price}}" name="price">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Category *</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select name="category">
+                                        {% for cat in category %} {% if cat.name == item.category.name %}
+                                        <option value="{{ cat.id }}" selected>{{ cat.name }}</option>
+                                        {% else %}
+                                        <option value="{{ cat.id }}">{{ cat.name }}</option>
+                                        {% endif %} {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Item Image *</label>
+                            <div class="file has-name">
+                                <label class="file-label">
+                                    <input class="file-input" type="file" name="image">
+                                    <span class="file-cta">
+                                        <span class="file-icon">
+                                            <i class="fas fa-upload"></i>
+                                        </span>
+                                        <span class="file-label">
+                                            Choose a file…
+                                        </span>
+                                    </span>
+                                    <span class="file-name" id="fileName">
+
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-link">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

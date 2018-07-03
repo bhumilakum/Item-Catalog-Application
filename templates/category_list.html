@@ -1,0 +1,54 @@
+{% extends "main.html" %} {% block content %}
+<div class="tile is-ancestor is-capitalized">
+    <!-- Category list -->
+    <div class="tile is-parent is-5">
+        <div class="tile is-child box">
+            <h1 class="is-size-3">Categories</h1>
+            <br>
+            {% for cat in category %}
+                <p><strong><a href="{{url_for('showItems', category_name = cat.name )}}">{{ cat.name }}</a></strong></p>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- latest added items list -->
+    <div class="tile is-parent">
+        <div class="tile is-child box">
+            <div class="columns">
+                <div class="column">
+                    <h1 class="is-size-3">latest items</h1>
+                </div>
+                {% if 'username' in session %}
+                <div class="column has-text-right">
+                    <a href="{{url_for('addItem')}}" class="button is-info">Add item</a>
+                </div>
+                {% endif %}
+            </div>
+            {% for item in items %}
+            <div class="box">
+                <article class="media">
+                    <div class="media-left">
+                        <figure class="image is-64x64 is-square">
+                            <a href="{{url_for('showItemData', category_name = item.category.name, item_name = item.name)}}">
+                                <img src="{{url_for('static', filename = 'img/'+item.image)}}"  alt= {{ item.name }}>
+                            </a>
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>
+                                    <a href="{{url_for('showItemData', category_name = item.category.name, item_name = item.name)}}">{{ item.name }}</a>
+                                </strong>
+                                <br>
+                                <small>Category: {{ item.category.name }}</small>
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
