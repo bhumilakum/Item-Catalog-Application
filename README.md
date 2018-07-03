@@ -96,3 +96,7 @@ python  application.py
 ```
 
 User can access and test an application by visiting [http://localhost:8000](http://localhost:8000) locally on browser.
+
+## Demo of project
+
+![image](static/img/demo1.png)
