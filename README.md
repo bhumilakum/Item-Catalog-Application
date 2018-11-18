@@ -95,7 +95,7 @@ To run this project, a user should run the following command into the command li
 python  application.py
 ```
 
-User can access and test an application by visiting [http://localhost:8000](http://localhost:8000) locally on browser.
+User can access and test an application by visiting [http://ec2-13-232-169-122.ap-south-1.compute.amazonaws.com/](http://ec2-13-232-169-122.ap-south-1.compute.amazonaws.com/) on browser.
 
 ## Demo of project
 
